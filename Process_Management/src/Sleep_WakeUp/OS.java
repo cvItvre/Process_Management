@@ -53,10 +53,9 @@ public class OS extends Thread {
 		OS.criticalSection = false;
 		System.out.println("WakingUp All Processes");
 		for(int i = 0; i < OS.processesTable.size(); i++) {
-			if (i != processID) {
-				OS.processesTable.get(i).interrupt();
-			}
-		}	
+			OS.processesTable.get(i).interrupt();
+		}
+		
 	}
 
 }

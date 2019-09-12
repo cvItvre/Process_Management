@@ -81,7 +81,7 @@ public class Process extends Thread {
 		System.out.println("Process " + this.getProcessID() + " entered the crtitical section.");
 		
 		try {
-			sleep(2000);
+			sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

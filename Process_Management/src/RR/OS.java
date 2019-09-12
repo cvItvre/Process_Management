@@ -1,15 +1,17 @@
 package RR;
 
+import java.util.ArrayList;
+
 public class OS extends Thread {
 	
 	private Queue queue;
 	private static int quantum;
 	public static int actualProcess;
 	
-	public OS(int numProcess) {
+	public OS(int numProcess, ArrayList<String> priorities) {
 		this.queue = new Queue();
 		this.setQuantum(5000);
-		this.createProcess(numProcess);
+		this.createProcess(numProcess, priorities);
 		OS.actualProcess = 0;
 	}
 	
@@ -60,24 +62,24 @@ public class OS extends Thread {
 			
 		}
 		
-		System.out.println("====== OS Message: All the processes have finished. ======");
+		System.out.println("\n====== OS Message: All the processes have finished. ======");
 		
 	}
 	
-	private void createProcess(int numberOfProcess) {
+	private void createProcess(int numberOfProcess, ArrayList<String> priorities) {
 		
 		for(int i = 0; i < numberOfProcess; i++) {
 			
 			if (i == 0) {
-				Cell cell = new Cell(new Process(i));
+				Cell cell = new Cell(new Process(i, priorities.get(i)));
 				this.getQueue().getCells().add(cell);
 			} else if (i > 0 && i < numberOfProcess - 1) {
-				Cell cell = new Cell(new Process(i));
+				Cell cell = new Cell(new Process(i, priorities.get(i)));
 				this.getQueue().getCells().add(cell);
 				
 				this.getQueue().getCells().get(i - 1).setNextProcess(cell.getProcess());
 			} else {
-				Cell cell = new Cell(new Process(i));
+				Cell cell = new Cell(new Process(i, priorities.get(i)));
 				this.getQueue().getCells().add(cell);
 				
 				this.getQueue().getCells().get(i - 1).setNextProcess(cell.getProcess());
@@ -93,8 +95,8 @@ public class OS extends Thread {
 		int lastProcess = OS.actualProcess;
 		OS.actualProcess = this.getQueue().getCells().get(this.getIndexByID(OS.actualProcess)).getNextProcess().getProcessID();
 		
-		System.out.println("LastProcess: " + lastProcess);
-		System.out.println("NewProcess: " + OS.actualProcess);
+		System.out.println("-> LastProcess: " + lastProcess);
+		System.out.println("-> NextProcess: " + OS.actualProcess);
 		
 		try {
 			sleep(100);

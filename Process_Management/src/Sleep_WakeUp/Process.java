@@ -28,7 +28,7 @@ public class Process extends Thread {
 			}*/
 			
 			while(OS.criticalSection) {
-				try { //Sleeping for "eternity".
+				try { 
 					sleep(500000 * 1000);
 				} catch (InterruptedException e) {
 					System.out.println("Process " + this.getProcessID() + " WakingUp...");
@@ -78,14 +78,19 @@ public class Process extends Thread {
 		
 		System.out.println("Process " + this.getProcessID() + " entered the crtitical section.");
 		
-		try { //Simulating some commands.
-			sleep(2000);
+		try { 
+			sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("Process " + this.getProcessID() + " quitted the crtitical section.");
 		OS.wakeUpProcesses(this.getProcessID());
+		
+		try { 
+			sleep(5000);
+		} catch (InterruptedException e) {
+		}
 		
 	}
 

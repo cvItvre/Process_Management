@@ -8,9 +8,11 @@ public class Process extends Thread {
 	private int programCounter;
 	private int totalProcessTime;
 	private int turn;
+	private String levelPriority;
 	
-	public Process(int processID) {
+	public Process(int processID, String priority) {
 		this.setProcessID(processID);
+		this.setLevelPriority(priority);
 		this.setProgramCounter(0);
 		this.setTotalProcessTime();
 		this.setTurn(processID);
@@ -19,16 +21,16 @@ public class Process extends Thread {
 	@Override
 	public void run() {
 		
-		System.out.println("Process Message: Process " + this.getProcessID() + " started.");
+		System.out.println("-> Process Message: Process " + this.getProcessID() + " started.\tPriority: " + this.getLevelPriority());
 		
 		while(this.getProgramCounter() < this.getTotalProcessTime()) {
 			
 			while(this.getTurn() != OS.actualProcess) {
-				System.out.println("Process Message: Process " + this.getProcessID() + " suspended.");
+				System.out.println("Process Message: Process " + this.getProcessID() + "\t==>\tState: Suspended.");
 				try {
 					sleep(10000);
 				} catch (InterruptedException e) {
-					System.out.println("Process Message: Process " + this.processID + " wakedup.");
+					//System.out.println("Process Message: Process " + this.processID + " wakedup.");
 				}
 			}
 			
@@ -42,7 +44,7 @@ public class Process extends Thread {
 			
 			this.programCounter += OS.getQuantum();
 			if (this.getProgramCounter() >= this.getTotalProcessTime()) {
-				System.out.println("Process Message: Process " + this.getProcessID() + " finished.");
+				System.out.println("-> Process Message: Process " + this.getProcessID() + " finished.");
 			}
 			
 		}
@@ -71,7 +73,7 @@ public class Process extends Thread {
 	
 	private void setTotalProcessTime() {
 		Random random = new Random();
-		this.totalProcessTime = (this.processID + 1) * 5000; //10 to 15 seconds, 2 to 3 interactions
+		this.totalProcessTime = (random.nextInt(5) + 1) * 5000; //5 to 25 seconds, 1 to 5 interactions
 	}
 	
 	private void setTurn(int turn) {
@@ -80,6 +82,14 @@ public class Process extends Thread {
 	
 	private int getTurn() {
 		return this.turn;
+	}
+	
+	private void setLevelPriority(String priority) {
+		this.levelPriority = priority;
+	}
+	
+	public String getLevelPriority() {
+		return this.levelPriority;
 	}
 
 	@Override
